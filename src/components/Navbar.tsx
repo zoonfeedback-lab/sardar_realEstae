@@ -18,6 +18,18 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Projects", href: "/projects" },
@@ -37,7 +49,10 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="text-2xl font-heading font-bold tracking-tight text-foreground z-50">
+        <Link
+          href="/"
+          className="text-2xl font-heading font-bold tracking-tight text-foreground z-[60]"
+        >
           Sardar Estate
         </Link>
 
@@ -54,42 +69,89 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* Right side: Theme Toggle */}
+        {/* Desktop: Theme Toggle */}
         <div className="hidden md:flex items-center gap-4">
           <ThemeToggle />
         </div>
 
-        {/* Mobile: Theme Toggle + Menu Toggle */}
-        <div className="flex items-center gap-3 md:hidden z-50">
-          <ThemeToggle />
-          <button
-            className="text-foreground p-2"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
-          </button>
-        </div>
+        {/* Mobile: Hamburger Button Only */}
+        <button
+          className="md:hidden z-[60] p-2 text-foreground rounded-lg hover:bg-foreground/10 transition-colors"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+        >
+          {mobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+        </button>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "100vh" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="fixed inset-0 bg-background z-40 flex flex-col items-center justify-center space-y-8 md:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-[55] md:hidden"
           >
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-2xl font-heading font-medium text-foreground hover:text-muted transition-colors"
-              >
-                {link.name}
-              </Link>
-            ))}
+            {/* Backdrop */}
+            <div
+              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+              onClick={() => setMobileMenuOpen(false)}
+            />
+
+            {/* Menu Panel — slides in from right */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="absolute top-0 right-0 w-[80%] max-w-sm h-full bg-background border-l border-border shadow-2xl flex flex-col"
+            >
+              {/* Menu Header */}
+              <div className="flex items-center justify-between px-6 py-6 border-b border-border">
+                <span className="text-lg font-heading font-bold text-foreground">
+                  Menu
+                </span>
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-2 text-foreground rounded-lg hover:bg-foreground/10 transition-colors"
+                  aria-label="Close menu"
+                >
+                  <FiX size={22} />
+                </button>
+              </div>
+
+              {/* Navigation Links */}
+              <div className="flex-1 flex flex-col px-6 py-8 space-y-2">
+                {navLinks.map((link, index) => (
+                  <motion.div
+                    key={link.name}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 + index * 0.08 }}
+                  >
+                    <Link
+                      href={link.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="block text-lg font-medium text-foreground hover:text-accent py-4 px-4 rounded-xl hover:bg-foreground/5 transition-all duration-200 tracking-wide"
+                    >
+                      {link.name}
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Theme Toggle — inside menu at the bottom */}
+              <div className="px-6 py-6 border-t border-border">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted font-medium uppercase tracking-wider">
+                    Theme
+                  </span>
+                  <ThemeToggle />
+                </div>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
