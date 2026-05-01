@@ -6,7 +6,6 @@ import { useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiMenu, FiX, FiArrowRight } from "react-icons/fi";
-import { useTheme } from "next-themes";
 import ThemeToggle from "./ThemeToggle";
 
 const navLinks = [
@@ -19,7 +18,6 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const { resolvedTheme } = useTheme();
 
   useEffect(() => setMounted(true), []);
 
@@ -62,10 +60,10 @@ export default function Navbar() {
             <Image
               src="/SRD-ESTATE_logo.png"
               alt="Sardar Estate"
-              width={160}
-              height={160}
-              className={`h-10 md:h-12 w-auto transition-all duration-300 ${
-                mounted && isScrolled && resolvedTheme === "light" ? "brightness-0 invert-0" : "brightness-0 invert"
+              width={140}
+              height={48}
+              className={`h-10 w-auto transition-all duration-300 ${
+                isScrolled ? "dark:invert-0 invert-0" : "invert brightness-0 invert dark:invert"
               }`}
               priority
             />
@@ -119,8 +117,6 @@ export default function Navbar() {
    Mobile Menu — separate component for cleanliness
    ═══════════════════════════════════════════════════ */
 function MobileMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
-  const { resolvedTheme } = useTheme();
-
   return (
     <AnimatePresence>
       {isOpen && (
@@ -155,10 +151,8 @@ function MobileMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
                 src="/SRD-ESTATE_logo.png"
                 alt="Sardar Estate"
                 width={120}
-                height={120}
-                className={`h-12 w-auto transition-all ${
-                  mounted && resolvedTheme === "light" ? "brightness-0 invert-0" : "brightness-0 invert"
-                }`}
+                height={40}
+                className="h-8 w-auto"
               />
               <button
                 onClick={onClose}
