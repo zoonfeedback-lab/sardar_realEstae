@@ -60,3 +60,13 @@
 html {
   scroll-behavior: smooth;
 }
+
+/* Hero carousel progress indicator */
+@keyframes progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}

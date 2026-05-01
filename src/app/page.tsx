@@ -7,6 +7,7 @@ import { FiCheckCircle, FiShield, FiUsers, FiAward, FiPhone, FiMail, FiMapPin, F
 import FloorPlansSection from "@/components/FloorPlansSection";
 import ParallaxSection from "@/components/ParallaxSection";
 import GallerySection from "@/components/GallerySection";
+import HeroCarousel from "@/components/HeroCarousel";
 
 const fadeIn: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -24,63 +25,8 @@ const staggerContainer: Variants = {
 export default function Home() {
   return (
     <main className="w-full">
-      {/* 1. HERO SECTION — always dark for cinematic impact */}
-      <section className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0 bg-gradient-to-b from-gray-900 via-black to-black opacity-80" />
-        <div 
-          className="absolute inset-0 z-[-1] bg-[url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center"
-          style={{ filter: "brightness(0.4)" }}
-        />
-
-        <div className="z-10 text-center px-6 max-w-4xl mx-auto flex flex-col items-center">
-          <motion.h1
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="text-5xl md:text-7xl font-bold mb-6 text-white leading-tight"
-          >
-            Find Your Dream Property With Confidence
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.4 }}
-            className="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl"
-          >
-            Premium plots, secure investments, and trusted real estate services by Sardar Estate
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-6 mb-12"
-          >
-            <Link
-              href="#projects"
-              className="px-8 py-4 bg-white text-black font-medium text-sm tracking-widest uppercase rounded-full hover:bg-gray-200 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all duration-300"
-            >
-              Explore Projects
-            </Link>
-            <Link
-              href="#contact"
-              className="px-8 py-4 bg-transparent border border-white/30 text-white font-medium text-sm tracking-widest uppercase rounded-full hover:bg-white hover:text-black hover:border-white transition-all duration-300"
-            >
-              Contact Us
-            </Link>
-          </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1 }}
-            className="text-sm text-gray-400 tracking-widest uppercase"
-          >
-            Trusted by 100+ satisfied clients
-          </motion.p>
-        </div>
-      </section>
+      {/* 1. HERO CAROUSEL SECTION */}
+      <HeroCarousel />
 
       {/* 2. ABOUT SECTION */}
       <section className="py-24 px-6 md:px-12 max-w-7xl mx-auto overflow-hidden">
