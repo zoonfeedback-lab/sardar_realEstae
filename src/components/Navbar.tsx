@@ -157,7 +157,7 @@ function MobileMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
                 width={120}
                 height={120}
                 className={`h-12 w-auto transition-all ${
-                  mounted && resolvedTheme === "light" ? "brightness-0 invert-0" : "brightness-0 invert"
+                  resolvedTheme === "light" ? "brightness-0 invert-0" : "brightness-0 invert"
                 }`}
               />
               <button
